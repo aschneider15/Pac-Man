@@ -6,6 +6,9 @@ TagManager:
   tags:
   - Enemy
   - MazeGeo
+  - Tele1
+  - Tele2
+  - Pellet
   layers:
   - Default
   - TransparentFX

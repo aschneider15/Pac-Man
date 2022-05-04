@@ -4,16 +4,27 @@ using UnityEngine;
 
 public class playerScript : MonoBehaviour
 {   private Rigidbody rb;
+    private Transform tf;
     public float speed = 16f;
+    public GameObject rightTeleport;
+    public GameObject rightExit;
+    public GameObject leftTeleport;
+    public GameObject leftExit;
+    private int count = 0;
+    public GameObject scoreText;
+    private TextMesh text;
     // Start is called before the first frame update
     void Start()
     {
+        tf = this.gameObject.GetComponent<Transform>();
         rb = this.gameObject.GetComponent<Rigidbody>();
+        text = scoreText.gameObject.GetComponent<TextMesh>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        text.text = "SCORE: " + count;
         if (Input.GetKeyDown("w"))
         {
             rb.velocity = Vector3.forward * speed;
@@ -30,9 +41,25 @@ public class playerScript : MonoBehaviour
         {
             rb.velocity = Vector3.right * speed;
         }
-        else if (Input.GetKeyDown("space"))
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.tag.Equals("Tele1"))
         {
-            rb.velocity = Vector3.up * speed;
+            print("woot");
+            tf.position = leftExit.gameObject.GetComponent<Transform>().position;
+        }
+        else if(collision.gameObject.tag.Equals("Tele2"))
+        {
+            print("woot");
+            tf.position = rightExit.gameObject.GetComponent<Transform>().position;
+        }
+        else if(collision.gameObject.tag.Equals("Pellet"))
+        {
+            print("pellet");
+            Destroy(collision.gameObject);
+            count++;
         }
     }
 }
