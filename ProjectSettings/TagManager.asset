@@ -9,6 +9,7 @@ TagManager:
   - Tele1
   - Tele2
   - Pellet
+  - Ghost
   layers:
   - Default
   - TransparentFX

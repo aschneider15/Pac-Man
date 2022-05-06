@@ -13,12 +13,16 @@ public class playerScript : MonoBehaviour
     private int count = 0;
     public GameObject scoreText;
     private TextMesh text;
+    public float invincibilityLength = 10f;
+    private float invincibilityCounter = 0f;
+    private bool isInvincible = false;
     // Start is called before the first frame update
     void Start()
     {
         tf = this.gameObject.GetComponent<Transform>();
         rb = this.gameObject.GetComponent<Rigidbody>();
         text = scoreText.gameObject.GetComponent<TextMesh>();
+
     }
 
     // Update is called once per frame
@@ -41,6 +45,16 @@ public class playerScript : MonoBehaviour
         {
             rb.velocity = Vector3.right * speed;
         }
+        
+        if(invincibilityCounter > 0)
+        {
+            isInvincible = true;
+            invincibilityCounter -= Time.deltaTime;
+        }
+        else
+        {
+            isInvincible = false;
+        }
     }
 
     void OnCollisionEnter(Collision collision)
@@ -60,6 +74,19 @@ public class playerScript : MonoBehaviour
             print("pellet");
             Destroy(collision.gameObject);
             count++;
+            invincibilityCounter = invincibilityLength;
+        }
+        else if(collision.gameObject.tag.Equals("Ghost"))
+        {
+            print("ghost hit");
+            if(isInvincible)
+            {
+                Destroy(collision.gameObject);
+            }
+            else
+            {
+                Destroy(this.gameObject);
+            }
         }
     }
 }
